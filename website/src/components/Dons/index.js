@@ -1,5 +1,5 @@
 import React from 'react'
-import { MDBContainer, MDBInput, MDBCardHeader, MDBRow, MDBCol,MDBBtn } from 'mdbreact'
+import { MDBContainer, MDBInput, MDBCardHeader, MDBRow, MDBCol, MDBBtn } from 'mdbreact'
 
 class Dons extends React.Component {
 
@@ -46,17 +46,26 @@ class Dons extends React.Component {
                                 onChange={event => this.setState({ motif: event.target.value })}
                                 type="text"
                             />
+                           <MDBContainer >
+                    <MDBRow>
+                                <MDBCol>
                                     <MDBInput
                                         label="montant"
                                         value={this.state.montant}
                                         onChange={event => this.setState({ montant: event.target.value })}
                                         type="numeric"
                                     />
-                                    <select class="browser-default custom-select">
+                                </MDBCol>
+                                <MDBCol>
+
+                                    <select className="browser-default custom-select">
                                         <option selected>Devise</option>
                                         <option value="1">Shekel</option>
                                         <option value="2">Euro</option>
                                     </select>
+                                </MDBCol>
+</MDBRow>
+                            </MDBContainer>
                             <MDBInput className=".col-md-6 float-left "
                                 label="cb"
                                 value={this.state.cb}
@@ -80,3 +89,4 @@ class Dons extends React.Component {
 }
 
 export default Dons
+

@@ -26,7 +26,7 @@ const Header = ({ classes }) => {
                     <MDBNavItem>
                         <MDBDropdown>
                             <MDBDropdownToggle nav caret>
-                                <MDBIcon icon="user" className="mr-1" />
+                            <MDBIcon icon="user" className="mr-1" />
                             </MDBDropdownToggle>
                             <MDBDropdownMenu className="dropdown-default" right>
                                 <MDBDropdownItem ><MDBNavLink to="/log-in" ><span className={classes.headerNavBarItem}>S'enregistrer</span></MDBNavLink></MDBDropdownItem>
