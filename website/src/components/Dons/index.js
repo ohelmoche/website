@@ -1,19 +1,33 @@
 import React from 'react'
-import { MDBContainer, MDBInput, MDBCardHeader, MDBRow, MDBCol, MDBBtn } from 'mdbreact'
+import { MDBContainer, MDBCardHeader, MDBRow, MDBCol } from 'mdbreact'
+
+import FomrDons from './FormDons'
 
 class Dons extends React.Component {
 
     state = {
-        name: '',
+        username: '',
         phone: '',
-        mail: '',
+        email: '',
         motif: '',
         montant: '',
-        Devise: 'shekel',
+        devise: 'shekel',
         cb: ''
     }
 
+    onChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+
+    handleSubmit = () => {
+        console.log('handleSubmit')
+    }
+
     render() {
+        const { username, email, question, montant, phone, motif, devise } = this.state
+
+
         return (
             <MDBContainer >
                 <MDBCardHeader className="font-weight-bold d-flex justify-content-center text-dark bg-white mt-0">
@@ -22,65 +36,17 @@ class Dons extends React.Component {
                 <MDBContainer >
                     <MDBRow>
                         <MDBCol md="6">
-                            <MDBInput
-                                label="nom"
-                                value={this.state.name}
-                                onChange={event => this.setState({ name: event.target.value })}
-                                type="text"
-                            />
-                            <MDBInput
-                                label="telephone"
-                                value={this.state.phone}
-                                onChange={event => this.setState({ phone: event.target.value })}
-                                type="text"
-                            />
-                            <MDBInput
-                                label="mail"
-                                value={this.state.mail}
-                                onChange={event => this.setState({ mail: event.target.value })}
-                                type="email"
-                            />
-                            <MDBInput
-                                label="motif"
-                                value={this.state.motif}
-                                onChange={event => this.setState({ motif: event.target.value })}
-                                type="text"
-                            />
-                           <MDBContainer >
-                    <MDBRow>
-                                <MDBCol>
-                                    <MDBInput
-                                        label="montant"
-                                        value={this.state.montant}
-                                        onChange={event => this.setState({ montant: event.target.value })}
-                                        type="numeric"
-                                    />
-                                </MDBCol>
-                                <MDBCol>
-
-                                    <select className="browser-default custom-select">
-                                        <option selected>Devise</option>
-                                        <option value="1">Shekel</option>
-                                        <option value="2">Euro</option>
-                                    </select>
-                                </MDBCol>
-</MDBRow>
-                            </MDBContainer>
-                            <MDBInput className=".col-md-6 float-left "
-                                label="cb"
-                                value={this.state.cb}
-                                onChange={event => this.setState({ cb: event.target.value })}
-                                type="numeric"
-                            />
-                            <MDBBtn className="d-flex justify-content-end" color='primary'>Valider</MDBBtn>
+                            <FomrDons onChange={this.onChange} username={username} phone={phone} montant={montant} motif={motif} devise={devise}
+                                email={email} question={question} onSubmit={this.handleSubmit} />
                         </MDBCol>
                         <MDBCol md="6">
                             <MDBContainer>
-                                <p className="justify-content-center">PHOTO</p>
+                                <MDBRow>
+                                    <p className="justify-content-center">PHOTO</p>
+                                </MDBRow>
                             </MDBContainer>
                         </MDBCol>
                     </MDBRow>
-
                 </MDBContainer>
             </MDBContainer>
         )

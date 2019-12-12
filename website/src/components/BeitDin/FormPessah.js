@@ -59,7 +59,7 @@ const Form = ({ onChange, username, email, question, onSubmit }) => (
 
 
             <div className="text-center mt-4">
-                <MDBBtn onClick={onSubmit} color="brown">Envoyer</MDBBtn>
+                <MDBBtn onClick={onSubmit} color="indigo" >Envoyer</MDBBtn>
             </div>
 
         </form>

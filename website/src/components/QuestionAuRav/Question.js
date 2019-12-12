@@ -60,7 +60,7 @@ class Question extends Component {
                 <MDBRow className="py-3">
                     <MDBCol md="12">
                         <MDBNavLink exact to={`/question-au-rav/`} >
-                            <MDBIcon icon="reply" className="pull-right ml-2" />
+                            <MDBIcon icon="reply"  className="pull-right ml-2" />
                         </MDBNavLink>
                         <MDBCardHeader className="font-weight-bold d-flex justify-content-between text-dark bg-white">
                             <p className="mr-4 mb-0"> Question</p>
@@ -73,7 +73,7 @@ class Question extends Component {
                                 <img className="card-img-64 d-flex mx-auto mb-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (32).jpg" alt="" />
                                 <MDBMedia body className="text-center text-md-left ml-md-3 ml-0">
 
-                                    <h4 className="font-weight-bold mt-0">
+                                    <h4 className="font-weight-bold mt-0 ">
                                         {question.nomDeLaPerson}
                                         ( Reponse Rav :  {question.nomDuRav} )
                                     </h4>

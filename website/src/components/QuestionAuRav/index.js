@@ -2,9 +2,17 @@ import React, { Component } from 'react';
 
 import FormQuestionAuRav from './FormQuestionAuRav'
 
-import { MDBContainer, MDBCardHeader, MDBMedia, MDBRow, MDBCol, MDBNavLink, MDBIcon } from "mdbreact";
+import { MDBContainer, MDBCardHeader, MDBMedia, MDBRow, MDBCol, MDBNavLink, MDBIcon ,MDBTable } from "mdbreact";
 import MaQuestion from './Question'
 
+
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+import { withStyles } from '@material-ui/core/styles';
+import styles from '../../constants/style'
 
 import Questions from './Questions'
 
@@ -16,6 +24,9 @@ class Question extends Component {
         email: '',
         question: '',
         questions: Questions,
+        isPrivate: false,
+        categorieSelected: 'ten',
+        sujet: '',
         search: ''
     }
 
@@ -36,36 +47,102 @@ class Question extends Component {
     };
 
     addQuestion = () => {
-        let { questions, username, email, question } = this.state
+        let { questions, username, email, question, isPrivate, sujet } = this.state
         questions.push(
             {
                 nomDeLaPerson: username,
                 email: email,
                 nomDuRav: 'rav cohen',
-                Private: false,
-                question: question
+                isPrivate: isPrivate,
+                question: question,
+                sujet
             })
         this.setState({ questions })
     }
 
+    onChangeIsprivate = (isPrivate) => {
+        this.setState({
+            isPrivate: !isPrivate
+        })
+    }
+
+    handleChangeCategorie = event => {
+        console.log(event.target.value);
+        this.setState({ categorieSelected: event.target.value })
+    };
+
 
     render() {
 
-        const { questions, username, email, question, search } = this.state
+        const { questions, username, email, question, search, isPrivate } = this.state
+        const { classes } = this.props
         return (
-            <MDBContainer>
+            <MDBContainer style={{ paddingTop: 5 }}>
                 <MDBRow className="">
                     <MDBCol md="6">
-                        <FormQuestionAuRav onChange={this.onChange} username={username} email={email} question={question} onSubmit={this.addQuestion} />
+                        <FormQuestionAuRav onChange={this.onChange} username={username} email={email} question={question} onSubmit={this.addQuestion}
+                            isPrivate={isPrivate} onChangeIsprivate={this.onChangeIsprivate} />
                     </MDBCol>
                     <MDBCol md="6">
                         <MDBContainer>
-                        <MDBCardHeader className="font-weight-bold d-flex justify-content-between text-dark bg-white">
+                            <MDBCardHeader className="font-weight-bold d-flex justify-content-between text-dark bg-white">
                                 <p className="mr-4 mb-0">Questions</p>
                             </MDBCardHeader>
 
                             <form className="mt-4">
-                                <div className="input-group input-group-md px-2 mb-4">
+
+                                <div className="input-group input-group-md px-2 mb-2">
+                                    <FormControl variant="filled" className={classes.formControl} style={{ marginLeft: 5 ,marginBottom:2 }}>
+                                        <InputLabel id="demo-simple-select-filled-label">Categorie</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-filled"
+                                            value={this.state.categorieSelected}
+                                            onChange={this.handleChangeCategorie}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Tout</em>
+                                            </MenuItem>
+                                            <MenuItem value={'ten'}>הלכה</MenuItem>
+                                            <MenuItem value={'twenty'}>מוסר</MenuItem>
+                                            <MenuItem value={'thirty'}>גמרא</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl variant="filled" className={classes.formControl} style={{ marginLeft: 5 ,marginBottom:2}}>
+                                        <InputLabel id="demo-simple-select-filled-label">Categorie</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-filled"
+                                            value={this.state.categorieSelected}
+                                            onChange={this.handleChangeCategorie}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Tout</em>
+                                            </MenuItem>
+                                            <MenuItem value={'ten'}>הלכה</MenuItem>
+                                            <MenuItem value={'twenty'}>מוסר</MenuItem>
+                                            <MenuItem value={'thirty'}>גמרא</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <FormControl variant="filled" className={classes.formControl} style={{ marginLeft: 5 ,marginBottom:2}}>
+                                        <InputLabel id="demo-simple-select-filled-label">Categorie</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-filled-label"
+                                            id="demo-simple-select-filled"
+                                            value={this.state.categorieSelected}
+                                            onChange={this.handleChangeCategorie}
+                                        >
+                                            <MenuItem value="">
+                                                <em>Tout</em>
+                                            </MenuItem>
+                                            <MenuItem value={'ten'}>הלכה</MenuItem>
+                                            <MenuItem value={'twenty'}>מוסר</MenuItem>
+                                            <MenuItem value={'thirty'}>גמרא</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+
+                                <div className="input-group input-group-md px-2 mb-3">
                                     <div className="input-group-prepend">
                                         <span className="input-group-text white grey-text" id="basic-addon9">
                                             <MDBIcon icon="search" />
@@ -75,7 +152,9 @@ class Question extends Component {
                                         value={search} onChange={this.onChange} name='search' placeholder="rechercher une question"
                                         aria-describedby="basic-addon9" />
                                 </div>
+                            </form>
 
+                            <MDBTable scrollY maxHeight="350px">
                                 {
                                     Object.keys(questions)
                                         .map(key =>
@@ -96,7 +175,8 @@ class Question extends Component {
                                             </MDBMedia>
                                         )
                                 }
-                            </form>
+                            </MDBTable>
+
                         </MDBContainer>
                     </MDBCol>
                 </MDBRow>
@@ -114,4 +194,4 @@ export {
     MaQuestion
 }
 
-export default Question
+export default withStyles(styles)(Question);

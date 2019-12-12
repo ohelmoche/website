@@ -1,3 +1,5 @@
+import Colors from './Colors'
+
 
 
 const styles = {
@@ -17,6 +19,7 @@ const styles = {
   NavBarHeaderTitle: {
     textAlign: 'center',
     fontWeight: 600,
+    marginBottom: 0
   },
 
 
@@ -25,7 +28,7 @@ const styles = {
   imageCard:{
   },
   bodyCardMenu:{
-    backgroundColor: '#3F729B',
+    backgroundColor: Colors.colorPrincipalB,
     textAlign: 'center',
     color: "white",
     padding: 5
@@ -34,7 +37,14 @@ const styles = {
     color: 'black',
     textAlign: 'center',
     padding: 0
-  }
+  },
+
+
+
+  formControl: {
+    minWidth: 120,
+    minHeight: 30
+  },
 
 
   

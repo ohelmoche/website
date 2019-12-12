@@ -7,7 +7,7 @@ import {
 
 import { withStyles } from '@material-ui/core/styles';
 import styles from '../../constants/style'
-
+import Colors from '../../constants/Colors'
 
 import Header from './Header'
 
@@ -57,13 +57,13 @@ class NavbarPage extends Component {
       <div className="">
         <Header classes={classes} />
         <div ref={(el) => this.myRef = el}>
-          <MDBNavbar color="unique-color" dark expand="md" className={classes.navbar} fixed={this.state.fixedNavBar}  >
+          <MDBNavbar color={Colors.colorPrincipal} dark expand="md" className={classes.navbar} fixed={this.state.fixedNavBar} >
             <MDBContainer>
-              <MDBNavbarToggler onClick={this.toggleCollapse} />
+              <MDBNavbarToggler left onClick={this.toggleCollapse} />
               <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar >
 
                 <MDBNavbarBrand href="/" >
-                    <MDBIcon icon="home" className="mr-1" />
+                    <MDBIcon icon="torah" className="mr-1" />
                 </MDBNavbarBrand>
 
                 <MDBNavbarNav left>
@@ -76,9 +76,9 @@ class NavbarPage extends Component {
                   <MDBNavItem>
                     <MDBNavLink to="/beit-din" onClick={this.toggleCollapseMobile}>Beit din</MDBNavLink>
                   </MDBNavItem>
-                  <MDBNavItem>
+                  {/* <MDBNavItem>
                     <MDBNavLink to="/beraha-gdolim" onClick={this.toggleCollapseMobile}>Beraha gdolim</MDBNavLink>
-                  </MDBNavItem>
+                  </MDBNavItem> */}
                   <MDBNavItem>
                     <MDBNavLink to="/horaire" onClick={this.toggleCollapseMobile}>Horaire</MDBNavLink>
                   </MDBNavItem>
