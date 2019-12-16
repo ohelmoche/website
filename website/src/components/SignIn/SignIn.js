@@ -1,5 +1,5 @@
 import React from "react";
-import { MDBModalFooter, MDBCard, MDBCardBody, MDBInput, MDBBtn, MDBIcon } from 'mdbreact';
+import { MDBModalFooter, MDBCardBody, MDBInput, MDBBtn, MDBIcon } from 'mdbreact';
 //import './Signin.css'
 
 import { SignUpLink } from '../SignUp';
@@ -9,15 +9,15 @@ import { SignUpLink } from '../SignUp';
 
 const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, handleFacebookSingIn, handleTwitterSingIn, isLoading }) => {
   return (
-    <MDBCard>
+    <>
       <MDBCardBody className="mx-2">
         <div className="text-center">
           <h3 className="dark-grey-text mb-5">
-            <strong>Sign in</strong>
+            <p>Se connecter</p>
           </h3>
         </div>
         <MDBInput
-          label="Your email"
+          label="Votre email"
           group
           value={email}
           onChange={onChange}
@@ -28,7 +28,7 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
           success="right"
         />
         <MDBInput
-          label="Your password"
+          label="Votre mot de passe"
           group
           type="password"
           name="password"
@@ -38,24 +38,25 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
           containerClass="mb-0"
         />
         {/* <PasswordForgetLink /> */}
-        <div className="text-center mb-3">
+        <div className="d-flex align-items-center">
           <MDBBtn
             type="button"
             gradient="lighten-1"
             rounded
             onClick={onSubmit}
-            className="btn-block z-depth-1a"
+            className="btn-block"
+            style={{ textTransform: 'none' }}
           >
             {
               isLoading === false ?
-                <strong>Sign in</strong>
+                <span className='' >Se connecter</span>
                 :
-                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             }
           </MDBBtn>
         </div>
-        <p className="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2">
-          or Sign in with:
+        <p className="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-3">
+          ou S'enregistrer avec :
                    </p>
         <div className="row my-3 d-flex justify-content-center">
           <MDBBtn
@@ -64,6 +65,7 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
             onClick={handleFacebookSingIn}
             rounded
             className="mr-md-3 z-depth-1a"
+
           >
             <MDBIcon fab icon="facebook-f" className="blue-text text-center" />
           </MDBBtn>
@@ -90,7 +92,7 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
       <MDBModalFooter className="mx-5 pt-3 mb-1">
         <SignUpLink />
       </MDBModalFooter>
-    </MDBCard>
+    </>
   );
 };
 

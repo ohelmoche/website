@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { withFirebase } from '../../services/firebase';
+
 
 import Signup from './Signup'
 
@@ -12,7 +14,7 @@ const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
   error: null,
-  isLoading : false 
+  isLoading: false
 };
 
 
@@ -25,10 +27,38 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    
+    const { email, password } = this.state;
+
+    this.setState({ isLoading : true })
+    console.log('1')
+    this.props.firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then(() => {
+        if (this._isMounted === true) {
+          this.setState({ ...INITIAL_STATE });
+        }
+        console.log('2')
+        this.setState({ isLoading : false })    
+        this.props.history.push('/');
+      })
+      .catch(error => {
+        if (this._isMounted === true) {
+          console.log(error)
+          this.setState({ isLoading : false })
+        }
+        console.log('error')
+        
+        if (error.message !== undefined) {
+          console.log(error.message)
+          this.setState({ isLoading : false })
+        }
+      })
+
 
     event.preventDefault();
   };
+
+
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -47,8 +77,8 @@ class SignUpFormBase extends Component {
     return (
       <MDBContainer>
         <MDBRow>
-          <MDBCol md="6" lg="5" className="mx-auto float-none white z-depth-1 py-2 px-2">
-              <Signup passwordTwo={passwordTwo} username={username} passwordOne={passwordOne} email={email} changeHandler={this.onChange} onSubmit={this.onSubmit} isLoading={isLoading} />
+          <MDBCol md="6" lg="5" className="mx-auto float-none white z-depth-1 ">
+            <Signup passwordTwo={passwordTwo} username={username} passwordOne={passwordOne} email={email} changeHandler={this.onChange} onSubmit={this.onSubmit} isLoading={isLoading} />
           </MDBCol>
         </MDBRow>
       </MDBContainer>
@@ -58,12 +88,11 @@ class SignUpFormBase extends Component {
 
 const SignUpLink = () => (
   <p>
-    Don't have an account? <Link to={'/sign-up'}>Sign Up</Link>
+    Vous avez pas de compte ? <Link to={'/sign-up'}>S'enregister</Link>
   </p>
 );
 
 
 export { SignUpLink };
 
-export default SignUpFormBase
-
+export default withFirebase(SignUpFormBase)

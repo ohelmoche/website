@@ -36,14 +36,15 @@ const styles = {
   headerNavBarItem:{
     color: 'black',
     textAlign: 'center',
-    padding: 0
+    padding: 0,
+    bottom: 0
   },
 
 
 
   formControl: {
     minWidth: 120,
-    minHeight: 30
+    minHeight: 30,
   },
 
 

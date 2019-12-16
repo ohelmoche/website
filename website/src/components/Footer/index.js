@@ -8,7 +8,7 @@ const path = 'http://localhost:3000'
 
 const Footer = ( ) =>{
     return(
-        <MDBFooter color={Colors.colorPrincipal} className="font-small pt-4 mt-4">
+        <MDBFooter color={Colors.colorPrincipal} className="font-small pt-4 mt-4" id="footer_screen">
            <MDBContainer>
           <MDBContainer fluid className="text-center text-md-left">
             <MDBRow>

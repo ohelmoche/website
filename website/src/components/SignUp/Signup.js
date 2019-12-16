@@ -1,19 +1,19 @@
 import React from "react";
-import { MDBModalFooter, MDBCard, MDBCardBody, MDBInput, MDBBtn } from 'mdbreact';
+import { MDBModalFooter, MDBCardBody, MDBInput, MDBBtn } from 'mdbreact';
 import { Link } from 'react-router-dom';
 
 
 const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, onSubmit , isLoading }) => {
     return (
-        <MDBCard>
+        <>
             <MDBCardBody className="mx-2">
                 <div className="text-center">
                     <h3 className="dark-grey-text mb-5">
-                        <strong>Register</strong>
+                        <p>S'enregistré</p>
                     </h3>
                 </div>
                 <MDBInput
-                    label="Your username"
+                    label="Votre nom"
                     group
                     value={username}
                     onChange={changeHandler}
@@ -24,7 +24,7 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     success="right"
                 />
                 <MDBInput
-                    label="Your email"
+                    label="Votre email"
                     group
                     value={email}
                     onChange={changeHandler}
@@ -35,7 +35,7 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     success="right"
                 />
                 <MDBInput
-                    label="Your password"
+                    label="Votre mot de passe"
                     group
                     value={passwordOne}
                     onChange={changeHandler}
@@ -45,7 +45,7 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     containerClass="mb-0"
                 />
                 <MDBInput
-                    label="Confirm Your password"
+                    label="Confirmé votre mot de passe"
                     group
                     value={passwordTwo}
                     onChange={changeHandler}
@@ -61,25 +61,26 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                         gradient="lighten-1"
                         rounded
                         className="btn-block z-depth-1a"
+                        style={{ textTransform: 'none' }}
                         onClick={onSubmit}
                     >
                         {
                             isLoading === false ?
-                                <strong>Register</strong>
-                                :
-                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span className='' >S'enregistré</span>
+                            :
+                            <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                         }
                     </MDBBtn>
                 </div>
 
             </MDBCardBody>
+
             <MDBModalFooter className="mx-5 pt-3 mb-1">
                 <p>
-                    You have an account? <Link to='/log-in'>Sign In</Link>
+                    Vpus avewz un compte ? <Link to='/log-in'>Se connecter</Link>
                 </p>
             </MDBModalFooter>
-        </MDBCard>
-
+        </>
     )
 }
 

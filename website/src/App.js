@@ -7,6 +7,8 @@ import Footer from './components/Footer'
 
 import './App.css';
 
+import { withAuthentication } from './services/Session'
+
 
 function App() {
   return (
@@ -23,4 +25,4 @@ function App() {
 }
 
 
-export default App;
+export default withAuthentication(App)

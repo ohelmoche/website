@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { withFirebase } from '../../services/firebase';
 
 // import {
 //   MDBIcon
@@ -8,10 +8,10 @@ import React from 'react';
 const SignOutButton = ({ firebase }) => (
   // <div  onClick={firebase.doSignOut} >Sign Out</div>
   // <MDBBtn color="primary" onClick={firebase.doSignOut}  rounded>Primary</MDBBtn>
-  <div  onClick={firebase.doSignOut} className="d-none d-md-inline">Sign Out</div>
+  <div  onClick={firebase.doSignOut} className="d-none d-md-inline text-dark">Se deconnecter</div>
 );
 
 
 
 
-export default SignOutButton
+export default withFirebase(SignOutButton)

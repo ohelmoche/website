@@ -8,8 +8,9 @@ import {
 
 } from "mdbreact";
 
-const Header = ({ classes }) => {
+import SignOut from '../SignOut'
 
+const Header = ({ classes, isLogin, email }) => {
 
     return (
         <MDBNavbar dark expand="md" color={Colors.colorPrincipal} className="nav "  >
@@ -19,15 +20,15 @@ const Header = ({ classes }) => {
                 </MDBNavbarBrand>
 
 
-                <img src={require('../../assets/img/logo1.jpg')}className="rounded float-left" alt="aligment" height="40" width="100" />
+                <img src={require('../../assets/img/logo1.jpg')} className="rounded float-left" alt="aligment" height="40" width="100" />
 
 
                 <MDBNavbarNav right>
                     <MDBNavItem style={{ marginRight: 15 }}>
                         <MDBNavLink active to="/dons" >
                             {/* <MDBIcon icon="donate" className="mr-1" /> */}
-                            <MDBIcon fab icon="paypal" className="mr-1"/>
-                            <MDBIcon fab icon="cc-visa" className="mr-2"/>
+                            <MDBIcon fab icon="paypal" className="mr-1" />
+                            <MDBIcon fab icon="cc-visa" className="mr-2" />
                             Faire un don
                         </MDBNavLink>
                     </MDBNavItem>
@@ -35,10 +36,22 @@ const Header = ({ classes }) => {
                         <MDBDropdown>
                             <MDBDropdownToggle nav caret>
                                 <MDBIcon icon="user" className="mr-1" />
+                                <span className='' >{email || ''}</span>
                             </MDBDropdownToggle>
-                            <MDBDropdownMenu className="dropdown-default" right>
-                                <MDBDropdownItem ><MDBNavLink to="/log-in" ><span className={classes.headerNavBarItem}>S'enregistrer</span></MDBNavLink></MDBDropdownItem>
-                                <MDBDropdownItem ><MDBNavLink to="/sign-up" ><span className={classes.headerNavBarItem}>S'inscrire</span></MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownMenu className="dropdown-default p-0" right>
+                                {
+                                    isLogin === true ?
+                                        <>
+                                            <MDBDropdownItem className="p-0 text-center" ><MDBNavLink to="/log-in" >
+                                                <SignOut />
+                                            </MDBNavLink></MDBDropdownItem>
+                                        </>
+                                        :
+                                        <>
+                                            <MDBDropdownItem  className="p-0 text-center"><MDBNavLink to="/log-in" ><span className={classes.headerNavBarItem}>Se connecter</span></MDBNavLink></MDBDropdownItem>
+                                            <MDBDropdownItem  className="p-0 text-center" ><MDBNavLink to="/sign-up" ><span className={classes.headerNavBarItem}>S'enregistrer</span></MDBNavLink></MDBDropdownItem>
+                                        </>
+                                }
                             </MDBDropdownMenu>
                         </MDBDropdown>
                     </MDBNavItem>

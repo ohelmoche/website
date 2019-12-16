@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 
 
-import { MDBContainer , MDBCol, MDBRow } from 'mdbreact';
+import { MDBContainer, MDBCol, MDBRow } from 'mdbreact';
 
 import SingIn from './SignIn'
 
-
+import { withFirebase } from '../../services/firebase';
 
 const INITIAL_STATE = {
   email: '',
   password: '',
   error: '',
-  isLoading : false 
+  isLoading: false
 };
 
 class SignInFormBase extends Component {
@@ -25,6 +25,7 @@ class SignInFormBase extends Component {
   }
 
   componentDidMount() {
+    this.props.firebase.doSignOut()
     this._isMounted = true;
   }
 
@@ -34,30 +35,55 @@ class SignInFormBase extends Component {
 
 
   onSubmit = async (event) => {
-    
 
-   
+    this.setState({ isLoading: true })
+    const { email, password } = this.state;
 
+
+    this.props.firebase
+      .doSignInWithEmailAndPassword(email, password)
+      .then((result) => {
+        if (this._isMounted === true) {
+          this.setState({ ...INITIAL_STATE });
+        }
+        
+        this.setState({ isLoading: false })
+        this.props.history.push('/');
+      })
+      .catch(error => {
+        if (this._isMounted === true) {
+          this.setState({ error })
+          this.setState({ isLoading: false })
+        }
+
+        if (error.message !== undefined) {
+          alert(error.message)
+          this.setState({ isLoading: false })
+        }
+      })
 
     event.preventDefault();
   }
 
+
+
+
   handleGoogleSingIn = event => {
-    this.setState({ isLoading : true })
-    
+    this.setState({ isLoading: true })
+
     event.preventDefault();
   }
 
   handleFacebookSingIn = event => {
-    this.setState({ isLoading : true })
-    
+    this.setState({ isLoading: true })
+
     event.preventDefault();
   };
 
   handleTwitterSingIn = event => {
-    this.setState({ isLoading : true })
-    
-    
+    this.setState({ isLoading: true })
+
+
     event.preventDefault();
   };
 
@@ -69,16 +95,16 @@ class SignInFormBase extends Component {
   };
 
   render() {
-    const { email, password, error , isLoading } = this.state;
+    const { email, password, error, isLoading } = this.state;
     if (error !== '')
       console.log(error)
     return (
       <MDBContainer>
         <MDBRow>
-          <MDBCol md="6" lg="5" className="mx-auto float-none white z-depth-1 py-2 px-2">
+          <MDBCol md="6" lg="5" className="mx-auto float-none white z-depth-1 ">
 
-              <SingIn password={password} email={email} onChange={this.onChange} onSubmit={this.onSubmit} isLoading={isLoading}
-                handleFacebookSingIn={this.handleFacebookSingIn} handleTwitterSingIn={this.handleTwitterSingIn} handleGoogleSingIn={this.handleGoogleSingIn} />
+            <SingIn password={password} email={email} onChange={this.onChange} onSubmit={this.onSubmit} isLoading={isLoading}
+              handleFacebookSingIn={this.handleFacebookSingIn} handleTwitterSingIn={this.handleTwitterSingIn} handleGoogleSingIn={this.handleGoogleSingIn} />
           </MDBCol>
         </MDBRow>
       </MDBContainer>
@@ -88,5 +114,4 @@ class SignInFormBase extends Component {
 }
 
 
-export default SignInFormBase
-
+export default withFirebase(SignInFormBase)

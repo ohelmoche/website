@@ -12,8 +12,7 @@ import Video from './components/Video'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Dons from './components/Dons'
-
-
+import NousDecouvrire from './components/NousDecouvrire'
 
 import NotFound from './components/Notfound'
 
@@ -32,6 +31,7 @@ function Routes() {
       <Route exact path={'/log-in'} component={(props) => <SignIn  {...props} />} />
       <Route exact path={'/sign-up'} component={(props) => <SignUp  {...props} />} />
       <Route exact path={'/dons'} component={(props) => <Dons  {...props} />} />
+      <Route exact path={'/nous-decouvrire'} component={(props) => <NousDecouvrire  {...props} />} />
       <Route render={NotFound} />
     </Switch>
   );

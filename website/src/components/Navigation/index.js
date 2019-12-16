@@ -11,23 +11,48 @@ import Colors from '../../constants/Colors'
 
 import Header from './Header'
 
+import { AuthUserContext } from '../../services/Session';
 
 
+const Navigation = ({classes }) => (
+  <div>
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser ?
+          <NavbarPage email={authUser.email} isLogin={true}   classes={classes} />
+          :
+          <NavbarPage email={""} classes={classes} isLogin={false} />
+      }
+    </AuthUserContext.Consumer>
+  </div>
+);
 
 class NavbarPage extends Component {
+
 
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
+    this.sticky = 0
   }
   state = {
     isOpen: false,
-    fixedNavBar: ""
+    fixedNavBar: "",
+    hidden: false
   };
 
   componentDidMount = () => {
+    this.myRef = document.getElementById("navbar_pricipal");
+    this.sticky = this.myRef.offsetTop;
     window.addEventListener('scroll', this.handleScroll);
   }
+
+  componentWillUnmount() {
+    // If this component is unmounted, stop listening
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+
 
   toggleCollapse = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -41,23 +66,25 @@ class NavbarPage extends Component {
   }
 
   handleScroll = () => {
-    //console.log(this.myRef.getBoundingClientRect().top)
-    if (this.myRef.getBoundingClientRect().top < 0) {
-      this.state.fixedNavBar !== "top" && this.setState({ fixedNavBar: "top" })
+   // console.log(window.pageYOffset + ' ' + this.sticky)
+
+    if (window.pageYOffset >= this.sticky) {
+      this.myRef.classList.add("sticky")
     } else {
-      this.state.fixedNavBar !== "" && this.setState({ fixedNavBar: "" })
+      this.myRef.classList.remove("sticky");
     }
+
   }
 
 
   render() {
-    const { classes } = this.props;
+    const { classes , isLogin , email } = this.props;
 
     return (
       <div className="">
-        <Header classes={classes} />
-        <div ref={(el) => this.myRef = el}>
-          <MDBNavbar color={Colors.colorPrincipal} dark expand="md" className={classes.navbar} fixed={this.state.fixedNavBar} >
+        <Header classes={classes} isLogin={isLogin}  email={email} />
+
+          <MDBNavbar color={Colors.colorPrincipal} dark expand="md" className="" fixed={this.state.fixedNavBar} id="navbar_pricipal" >
             <MDBContainer>
               <MDBNavbarToggler left onClick={this.toggleCollapse} />
               <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar >
@@ -88,14 +115,16 @@ class NavbarPage extends Component {
                   <MDBNavItem>
                     <MDBNavLink to="/nous-contacter" onClick={this.toggleCollapseMobile} >Nous contacter</MDBNavLink>
                   </MDBNavItem>
+                  <MDBNavItem>
+                    <MDBNavLink to="/nous-decouvrire" onClick={this.toggleCollapseMobile} >Nous decouvrire</MDBNavLink>
+                  </MDBNavItem>
                 </MDBNavbarNav>
               </MDBCollapse>
             </MDBContainer>
           </MDBNavbar>
         </div>
-      </div>
     );
   }
 }
 
-export default withStyles(styles)(NavbarPage);
+export default withStyles(styles)(Navigation);
