@@ -5,13 +5,16 @@ import { compose } from 'recompose';
 import AuthUserContext from './context';
 import { withFirebase } from '../firebase';
 
+
+
 const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     componentDidMount() {
       this.listener = this.props.firebase.auth.onAuthStateChanged(
         authUser => {
+          console.log('user conected')
           if (!condition(authUser)) {
-            this.props.history.push('/');
+            this.props.history.push('/log-in');
           }
         },
       );
@@ -32,10 +35,12 @@ const withAuthorization = condition => Component => {
     }
   }
 
+  
   return compose(
     withRouter,
     withFirebase,
-  )(WithAuthorization);
+  )(WithAuthorization)
+  
 };
 
 export default withAuthorization;

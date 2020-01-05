@@ -3,17 +3,78 @@ import React from "react";
 import { MDBContainer, MDBCardHeader, MDBBtn, MDBRow, MDBCol } from "mdbreact";
 import Snif from './snif'
 
+import { withFirebase } from './../../services/firebase';
+import { connect } from 'react-redux'
+
+import Notification from '../Notification'
+
+
 class NousContacter extends React.Component {
 
     state = {
-        nom: '',
+        username: '',
         email: '',
-        message: ''
+        message: '',
+        errors: {
+            email: ''
+        },
+        openNotificationSuccess: false,
+        openNotificationError: false,
     }
 
-    onSubmit = () => {
+    componentDidMount = () => {
+        if (this.props.user !== undefined) {
+            this.setState({
+                email: this.props.user.email,
+                username: this.props.user.displayName
+            })
+        }
+    }
+
+
+
+    onSubmit = async () => {
+        let { email, username, message, errors } = this.state
+        if (errors.email !== '' && username !== '' && message !== '') {
+            await this.props.firebase.contact().add({
+                email,
+                username,
+                message,
+            })
+                .then(() => {
+                    this.setState({ openNotificationSuccess: true })
+                    console.log("contact successfully written!");
+                })
+                .catch((error) => {
+                    this.setState({ openNotificationError: true })
+                    console.error("Error writing contact: ", error);
+                });
+        } else {
+            this.setState({ openNotificationError: true })
+        }
 
     }
+
+    onChange = event => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = this.state.errors;
+
+        switch (name) {
+            case 'email':
+                errors.email =
+                    validateEmail(value)
+                        ? ''
+                        : 'Email n\'est pas valide!';
+                break;
+            default:
+                break;
+        }
+        this.setState({ errors, [name]: value }, () => {
+         //    console.log(errors)
+        })
+    };
+
 
     render() {
         return (
@@ -37,14 +98,14 @@ class NousContacter extends React.Component {
                 </MDBCardHeader>
 
                 <MDBContainer >
-                    <form className="mt-4">
+                    <div className="mt-4">
                         <div className="d-md-flex flex-md-fill">
                             <div className="input-group input-group-md px-2 mb-4">
                                 <div className="input-group-prepend">
                                     <span className="input-group-text white grey-text" id="basic-addon9">1</span>
                                 </div>
                                 <input type="text" className="form-control mt-0 black-border rgba-white-strong" placeholder="Nom"
-                                    value={this.state.nom} onChange={e => this.setState({ nom: e.target.value })} name='nom'
+                                    value={this.state.username || '' } onChange={this.onChange} name='username'
                                     aria-describedby="basic-addon9" />
                             </div>
                             <div className="input-group input-group-md px-2 mb-4">
@@ -52,21 +113,26 @@ class NousContacter extends React.Component {
                                     <span className="input-group-text white grey-text" id="basic-addon10">2</span>
                                 </div>
                                 <input type="email" className="form-control mt-0 black-border rgba-white-strong" placeholder="Email"
-                                    value={this.state.email} onChange={e => this.setState({ email: e.target.value })} name='email'
+                                    value={this.state.email || ''} onChange={this.onChange} name='email'
                                     aria-describedby="basic-addon10" />
                             </div>
                         </div>
 
                         <div className="form-group px-2">
-                            <textarea className="form-control pl-3 pt-3" id="exampleFormControlTextarea1" rows="6" value={this.state.message} onChange={e => this.setState({ message: e.target.value })} name='message'
+                            <textarea className="form-control pl-3 pt-3" id="exampleFormControlTextarea1" rows="6" value={this.state.message || ''} onChange={this.onChange} name='message'
                                 placeholder="ecrire votre demande ici..."></textarea>
                         </div>
+
+                        {this.state.errors.email.length > 0 &&
+                            <span className='text-danger pl-2 pt-0 m-0'>{this.state.errors.email}</span>}
 
                         <div className="text-center mt-4">
                             <MDBBtn onClick={this.onSubmit} color="primary">Envoyer</MDBBtn>
                         </div>
-                    </form>
+                    </div>
                 </MDBContainer>
+                <Notification handleClose={() => { this.setState({ openNotificationError: false }) }} open={this.state.openNotificationError} message={"problem d'envoie du message "} variant={"error"} />
+                <Notification handleClose={() => { this.setState({ openNotificationSuccess: false }) }} open={this.state.openNotificationSuccess} message={"Message envoyée"} variant={"success"} />
 
             </MDBContainer>
         )
@@ -74,6 +140,20 @@ class NousContacter extends React.Component {
 
 }
 
+function validateEmail(email) {
+    // eslint-disable-next-line 
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 
-export default NousContacter
+
+const mapStateToProps = (state) => {
+    return {
+        user: state.user
+    }
+}
+
+
+
+export default (connect(mapStateToProps)(withFirebase(((NousContacter)))))

@@ -23,11 +23,11 @@ const YoutubePlayer = ({ video }) => {
     }
   }
 
-  const videoID = video.id.videoId;
-  const titre = video.snippet.title;
+  const videoID = video.videoId;
+  const titre = video.title;
 
   return (
-    <MDBContainer>
+    <MDBContainer className ="m-0 p-0">
       <MDBRow>
       <MDBContainer>
         <YouTube
@@ -41,7 +41,6 @@ const YoutubePlayer = ({ video }) => {
       <MDBRow>
         <MDBContainer>
           <div>{titre}</div>
-          <div>{video.snippet.description}</div>
         </MDBContainer>
       </MDBRow>
     </MDBContainer>

@@ -6,11 +6,13 @@ import { MDBContainer, MDBIcon, MDBMedia, MDBRow, MDBCol, MDBNavLink, MDBCardHea
 //import Questions from './Questions'
 import { withFirebase } from '../../services/firebase';
 
+import Commentaire from './Commentaire'
 
 class Question extends Component {
 
-    myRef = React.createRef();
-
+    //myRef = React.createRef();
+    _isMounted = false;
+    
     state = {
         loading: true,
         question: [],
@@ -22,25 +24,27 @@ class Question extends Component {
     }
 
     componentDidMount = async () => {
+        this._isMounted = true;
         window.scrollTo(0, 0);
         const idQuestion = this.props.match.params.id
         // window.addEventListener('scroll', this.handleScroll);
         // this.myRef = document.getElementById("footer_screen");
-        this.setState({ idQuestion })
+        this._isMounted && this.setState({ idQuestion })
 
         await this.getData(idQuestion)
         await this.getCommetary()
 
-        this.setState({ loading: false })
+        this._isMounted && this.setState({ loading: false })
     }
 
 
     componentWillUnmount() {
+        this._isMounted = false;
         // window.removeEventListener('scroll', this.handleScroll);
     }
 
     onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this._isMounted &&  this.setState({ [event.target.name]: event.target.value });
     };
 
     getData = async (idQuestion) => {
@@ -49,7 +53,7 @@ class Question extends Component {
             .then(doc => {
                 if (doc.exists) {
                     let element = doc.data()
-                    this.setState({
+                    this._isMounted &&  this.setState({
                         question: {
                             nomDuRav: element.rav || 'non-definis',
                             isPrivate: element.isPrivate || 'non-definis',
@@ -80,7 +84,7 @@ class Question extends Component {
                         commentaire : element.commentaire,
                     })
                 });
-                this.setState( { commentaires })
+                this._isMounted &&  this.setState( { commentaires })
             });
     }
 
@@ -96,7 +100,8 @@ class Question extends Component {
         await this.props.firebase.commentaires().add({
             nomCommentaire,
             commentaire,
-            idQuestion
+            idQuestion,
+            isPrivate: true
         })
             .then(() => {
                 console.log("commentaire successfully written!");
@@ -123,9 +128,9 @@ class Question extends Component {
     // }
 
     handleAddCommentary = async () => {
-        this.setState({ LoadingCommentary: true })
+        this._isMounted && this.setState({ LoadingCommentary: true })
         await this.getMoreComentary()
-        this.setState({ LoadingCommentary: false })
+        this._isMounted && this.setState({ LoadingCommentary: false })
     }
 
     render() {
@@ -192,17 +197,7 @@ class Question extends Component {
                                                 {
                                                     Object.keys(commentaires)
                                                         .map(key =>
-                                                            <MDBMedia
-                                                                key={key}
-                                                                className="d-block d-md-flex mt-4">
-                                                                <img className="card-img-64 d-flex mx-auto mb-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (3).jpg" alt="" />
-                                                                <MDBMedia body className="text-center text-md-left ml-md-3 ml-0">
-                                                                    <h5 className="font-weight-bold mt-0">
-                                                                        {commentaires[key].nomCommentaire}
-                                                                    </h5>
-                                                                    {commentaires[key].commentaire}
-                                                                </MDBMedia>
-                                                            </MDBMedia>
+                                                            <Commentaire  key={key} username={commentaires[key].nomCommentaire}  commentaire={commentaires[key].commentaire} />
                                                         )
                                                 }
                                                 {

@@ -7,10 +7,10 @@ import { SignUpLink } from '../SignUp';
 
 
 
-const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, handleFacebookSingIn, handleTwitterSingIn, isLoading }) => {
+const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn,isLoading ,errors }) => {
   return (
     <>
-      <MDBCardBody className="mx-2">
+      <MDBCardBody className="">
         <div className="text-center">
           <h3 className="dark-grey-text mb-5">
             <p>Se connecter</p>
@@ -21,24 +21,32 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
           group
           value={email}
           onChange={onChange}
+          className="mb-0"
           type="email"
           name="email"
           validate
-          error="wrong"
-          success="right"
+          containerClass="mb-0"
         />
+        {errors.email.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.email}</span>}
+
         <MDBInput
           label="Votre mot de passe"
           group
           type="password"
           name="password"
+          className="mb-0 mt-5" 
           value={password}
           onChange={onChange}
           validate
           containerClass="mb-0"
         />
+          {errors.password.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.password}</span>}
+
+
         {/* <PasswordForgetLink /> */}
-        <div className="d-flex align-items-center">
+        <div className="d-flex align-items-center mt-3">
           <MDBBtn
             type="button"
             gradient="lighten-1"
@@ -59,25 +67,6 @@ const FormPage = ({ onChange, password, email, onSubmit, handleGoogleSingIn, han
           ou S'enregistrer avec :
                    </p>
         <div className="row my-3 d-flex justify-content-center">
-          <MDBBtn
-            type="button"
-            color="white"
-            onClick={handleFacebookSingIn}
-            rounded
-            className="mr-md-3 z-depth-1a"
-
-          >
-            <MDBIcon fab icon="facebook-f" className="blue-text text-center" />
-          </MDBBtn>
-          <MDBBtn
-            type="button"
-            color="white"
-            onClick={handleTwitterSingIn}
-            rounded
-            className="mr-md-3 z-depth-1a"
-          >
-            <MDBIcon fab icon="twitter" className="blue-text" />
-          </MDBBtn>
           <MDBBtn
             type="button"
             color="white"

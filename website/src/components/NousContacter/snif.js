@@ -6,9 +6,8 @@ import { MDBContainer,  MDBCardHeader, MDBCol ,MDBIcon} from "mdbreact"
 const Snif = ({name, adresse, telephone, mail, coordinate}) => (
     
     <MDBContainer>
-        <MDBCardHeader className="pl-0 font-weight-bold justify-content-between text-dark bg-white">
-            {name}
-            <MDBIcon icon="synagogue" className="ml-2"/>
+        <MDBCardHeader className="pl-0 font-weight-bold justify-content-between text-dark bg-white ">
+           <p className="font-weight-bold  text-center m-0"  > {name} </p>
         </MDBCardHeader >
         <MDBCol className="p-0 mt-2">
             <span className="font-weight-bold mr-2"> Adresse </span>

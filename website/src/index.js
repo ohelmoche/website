@@ -6,14 +6,19 @@ import "mdbreact/dist/css/mdb.css";
 import "./index.css";
 import App from './App';
 
+import { Provider } from 'react-redux'
+import { store } from './store/configureStore'
+
 
 import Firebase, { FirebaseContext } from './services/firebase';
 
 
 ReactDOM.render(
-    <FirebaseContext.Provider value={new Firebase()}>
-        <App />
-    </FirebaseContext.Provider>
+    <Provider store={store}>
+        <FirebaseContext.Provider value={new Firebase()}>
+            <App />
+        </FirebaseContext.Provider>
+    </Provider>
     , document.getElementById('root'));
 
 

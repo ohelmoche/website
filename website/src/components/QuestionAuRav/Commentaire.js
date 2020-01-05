@@ -1,46 +1,23 @@
-// Une liste de recettes pour remplir directement ta boîte !!
-let commentaires = [
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-    {
-        nomDeLaPerson: 'question 1',
-        idQuestion :  '1',
-        commentaire: "Laver et couper en 2 les feuilles d'épinards.\nPréparer une sauce vinaigrette.\nLaver et couper les pommes. Emincer l'oignon. Faire griller le Bacon.\nAjouter le tout aux épinards.\nS'accorde bien avec un Pinot Blanc."
-    },
-]
-  
-  export default commentaires
-  
+import React from 'react'
+import { MDBMedia } from "mdbreact"
+
+
+
+const Comentaires = ({ username, commentaire }) => (
+    <MDBMedia
+        style={{ backgroundColor: '#f5f5f5' }}
+        className="d-block d-md-flex mt-4 img-thumbnail"> 
+        <MDBMedia body className="text-center text-md-left ml-md-3 ml-0">
+            <h5 className="font-weight-bold mt-0">
+                {username}
+            </h5>
+            {commentaire}
+        </MDBMedia>
+    </MDBMedia>
+
+)
+
+
+
+
+export default Comentaires;

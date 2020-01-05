@@ -25,11 +25,16 @@ const Header = ({ classes, isLogin, email }) => {
 
                 <MDBNavbarNav right>
                     <MDBNavItem style={{ marginRight: 15 }}>
+                        <MDBNavLink active to="/nous-contacter">
+                            <MDBIcon fab icon="waze" className="" />
+                        </MDBNavLink>
+                    </MDBNavItem>
+                    <MDBNavItem style={{ marginRight: 15 }}>
                         <MDBNavLink active to="/dons" >
                             {/* <MDBIcon icon="donate" className="mr-1" /> */}
                             <MDBIcon fab icon="paypal" className="mr-1" />
                             <MDBIcon fab icon="cc-visa" className="mr-2" />
-                            Faire un don
+                            Dons
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
@@ -45,11 +50,12 @@ const Header = ({ classes, isLogin, email }) => {
                                             <MDBDropdownItem className="p-0 text-center" ><MDBNavLink to="/log-in" >
                                                 <SignOut />
                                             </MDBNavLink></MDBDropdownItem>
+                                            <MDBDropdownItem className="p-0 text-center" ><MDBNavLink to="/edition" ><span className={classes.headerNavBarItem}>Edition</span></MDBNavLink></MDBDropdownItem>
                                         </>
                                         :
                                         <>
-                                            <MDBDropdownItem  className="p-0 text-center"><MDBNavLink to="/log-in" ><span className={classes.headerNavBarItem}>Se connecter</span></MDBNavLink></MDBDropdownItem>
-                                            <MDBDropdownItem  className="p-0 text-center" ><MDBNavLink to="/sign-up" ><span className={classes.headerNavBarItem}>S'enregistrer</span></MDBNavLink></MDBDropdownItem>
+                                            <MDBDropdownItem className="p-0 text-center"><MDBNavLink to="/log-in" ><span className={classes.headerNavBarItem}>Se connecter</span></MDBNavLink></MDBDropdownItem>
+                                            <MDBDropdownItem className="p-0 text-center" ><MDBNavLink to="/sign-up" ><span className={classes.headerNavBarItem}>S'enregistrer</span></MDBNavLink></MDBDropdownItem>
                                         </>
                                 }
                             </MDBDropdownMenu>

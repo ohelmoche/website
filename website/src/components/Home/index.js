@@ -62,12 +62,12 @@ class HomePage extends React.Component {
         <MDBContainer>
           <MDBRow>
 
-            <MDBCol md="10">
+            <MDBCol md="10" className="">
               <Menu classes={classes} scrollToTop={this.scrollToTop} />
             </MDBCol>
 
             <MDBCol md="2">
-              <div className="pl-2 pb-1 pt-1" >
+              <div className="pt-1" >
                 <img
                   src={'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(120).jpg'}
                   className="img-fluid rounded"
@@ -80,7 +80,7 @@ class HomePage extends React.Component {
 
               <Actualite />
             </MDBCol>
-
+            
           </MDBRow>
         </MDBContainer>
       );

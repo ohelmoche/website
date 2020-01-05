@@ -3,7 +3,7 @@ import { MDBModalFooter, MDBCardBody, MDBInput, MDBBtn } from 'mdbreact';
 import { Link } from 'react-router-dom';
 
 
-const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, onSubmit , isLoading }) => {
+const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, onSubmit , isLoading , errors }) => {
     return (
         <>
             <MDBCardBody className="mx-2">
@@ -20,9 +20,11 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     type="text"
                     name="username"
                     validate
-                    error="wrong"
-                    success="right"
+                    containerClass="mb-0"
+                    className="mb-0"
                 />
+                 {errors.username.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.username}</span>}
                 <MDBInput
                     label="Votre email"
                     group
@@ -31,9 +33,11 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     type="email"
                     name="email"
                     validate
-                    error="wrong"
-                    success="right"
+                    containerClass="mb-0"
+                    className="mb-0"
                 />
+                {errors.email.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.email}</span>}
                 <MDBInput
                     label="Votre mot de passe"
                     group
@@ -43,7 +47,10 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     name="passwordOne"
                     validate
                     containerClass="mb-0"
+                    className="mb-0"
                 />
+                {errors.passwordOne.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.passwordOne}</span>}
                 <MDBInput
                     label="Confirmé votre mot de passe"
                     group
@@ -53,7 +60,10 @@ const FormPage = ({ passwordTwo, username, changeHandler, passwordOne, email, on
                     name="passwordTwo"
                     validate
                     containerClass="mb-0"
+                    className="mb-0"
                 />
+                {errors.passwordTwo.length > 0 && 
+                        <span className='text-danger p-0 m-0'>{errors.passwordTwo}</span>}
 
                 <div className="text-center mb-3">
                     <MDBBtn

@@ -18,20 +18,21 @@ const Menu = ({ scrollToTop, classes }) => (
     <>
         <MDBRow id="categories" className="p-0 m-0">
             <CardMenu icon={"question"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/question-au-rav"} title={"Question au rav"} description={"Ready-to-use components that you can use in your"} />
-            <CardMenu icon={"video"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/video"} title={"Video"} description={"Ready-to-use components that you can use in your"} />
+            <CardMenu icon={"video"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/video"} title={"Shiourim"} description={"Ready-to-use components that you can use in your"} />
             <CardMenu icon={"gavel"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/beit-din"} title={"Beit din"} description={"Ready-to-use components that you can use in your"} />
+            <CardMenu icon={"donate"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/dons"} title={"Dons"} description={"Ready-to-use components that you can use in your"} />
+     
+            <CardMenu icon={"address-book"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/nous-contacter"} title={"Contacter"} description={"Ready-to-use components that you can use in your"} />
+            <CardMenu icon={"photo-video"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/nous-decouvrire"} title={"Decouvrir"} description={"Ready-to-use components that you can use in your"} />
+            <CardMenu icon={"clock"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/horaire"} title={"Horaire"} description={"Ready-to-use components that you can use in your"} />
         </MDBRow>
 
-        <MDBRow id="categories" className="p-0 m-0">
-            <CardMenu icon={"clock"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/horaire"} title={"Horaire"} description={"Ready-to-use components that you can use in your"} />
-            <CardMenu icon={"clock"} style={classes.bodyCardMenu} scrollToTop={scrollToTop} link={"/nous-contacter"} title={"Nous Contacter"} description={"Ready-to-use components that you can use in your"} />
-        </MDBRow>
     </>
 );
 
 
 const CardMenu = ({ style, tscrollToTop, link, title, description, icon }) => (
-    <MDBCol md="4"  className="p-1 m-0 "  > 
+    <MDBCol md="3" className="p-1 m-0 "  >
         <MDBNavLink
             to={link}
             onClick={tscrollToTop}
@@ -41,7 +42,7 @@ const CardMenu = ({ style, tscrollToTop, link, title, description, icon }) => (
                 <MDBCardImage
                     cascade
                     className="img-fluid "
-                    src="https://www.myjewishlearning.com/wp-content/uploads/2003/02/torah-scroll.jpg"
+                    src={require('../../assets/img/torah-scroll.jpg')}
                 />
                 <MDBCardBody cascade className={style} >
                     <MDBCardTitle style={{ margin: 0 }}>

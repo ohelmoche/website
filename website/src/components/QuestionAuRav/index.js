@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 import FormQuestionAuRav from './FormQuestionAuRav'
 
-import { MDBContainer, MDBCardHeader, MDBMedia, MDBRow, MDBCol, MDBNavLink, MDBIcon } from "mdbreact";
+import { MDBContainer, MDBCardHeader, MDBMedia, MDBRow, MDBCol, MDBIcon } from "mdbreact";
 import MaQuestion from './Question'
-
+import { Link } from 'react-router-dom';
 
 import { withFirebase } from '../../services/firebase';
 
@@ -22,35 +22,80 @@ import Notification from '../Notification'
 
 class Question extends Component {
 
+    _isMounted = false;
+
     state = {
         loading: true,
         openNotification: false,
+        openNotificationError: false,
+        errors: {
+            username: '',
+            email: '',
+            question: '',
+        },
         username: '',
         email: '',
         question: '',
         questions: [],
         isPrivate: false,
         categorieSelected: 'ten',
-        sujet: '',
         search: '',
         loadingQuestion: false,
         LoadingQuestionPlus: false
     }
 
     componentDidMount = async () => {
+        this._isMounted = true;
         await this.getData()
-        this.setState({ loading: false })
+        // this.isMounted && 
+        this._isMounted && this.setState({ loading: false })
     }
 
 
     componentWillUnmount() {
+        this._isMounted = false;
     }
+
+
+    onChange = event => {
+        event.preventDefault();
+        const { name, value } = event.target;
+        let errors = this.state.errors;
+
+        switch (name) {
+            case 'username':
+                errors.username =
+                    value.length < 5
+                        ? 'Full Name must be 5 characters long!'
+                        : '';
+                break;
+            case 'email':
+                errors.email =
+                    validateEmail(value)
+                        ? ''
+                        : 'Email n\'est pas vlide!';
+                break;
+            case 'question':
+                errors.question =
+                    value.length < 6
+                        ? 'la question n\'est pas remplie'
+                        : '';
+                break;
+            default:
+                break;
+        }
+        this._isMounted && this.setState({ errors, [name]: value }, () => {
+           // console.log(errors)
+        })
+        //  this._isMounted &&  this.setState({ [event.target.name]: event.target.value });
+    };
+
 
 
     getData = async () => {
         // ramener du server les 10 dernier question par categorie selectionné
         this.setState({ loadingQuestion: true })
-        await this.props.firebase.questions().get()
+        await this.props.firebase.questions().limit(10).get()
             .then(querySnapshot => {
 
                 let questions = []
@@ -66,70 +111,92 @@ class Question extends Component {
                         sujet: element.sujet || 'non-definis'
                     })
                 });
-                this.setState({ questions })
+                this._isMounted && this.setState({ questions })
             });
-        this.setState({ loadingQuestion: false })
+        this._isMounted && this.setState({ loadingQuestion: false })
     }
 
 
-    onChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
-    };
+
 
     onChangeIsprivate = (isPrivate) => {
-        this.setState({
-            isPrivate: !isPrivate
+        let { errors } = this.state
+        if(!this.state.isPrivate){
+            errors.username = ''
+        }else{
+           this.state.username === '' && (errors.username  = 'Full Name must be 5 characters long!')
+        }
+        this._isMounted && this.setState({
+            isPrivate: !isPrivate,
+            errors
         })
     }
 
     addQuestion = () => {
-        let { username, email, question, isPrivate, sujet } = this.state
-        this.setState({ loading: true })
+        let { username, email, question, isPrivate } = this.state
+        if (this.validateForm( email, question ) ) {
+            this._isMounted && this.setState({ loading: true })
 
-        // Add a new document in collection "questions"
-        this.props.firebase.questions().add({
-            username,
-            email,
-            question,
-            isPrivate,
-            sujet
-        })
-            .then(() => {
-                console.log("Document successfully written!");
-                this.setState({ openNotification: true })
-                this.getData()
+            // Add a new document in collection "questions"
+            this.props.firebase.questions().add({
+                username: isPrivate ? '' : username,
+                email,
+                question,
+                isPrivate: true,
+                annonyme: isPrivate,
+                reponse: null
             })
-            .catch(function (error) {
-                console.error("Error writing document: ", error);
-            });
+                .then(() => {
+                    console.log("Document successfully written!");
+                    this._isMounted && this.setState({ openNotification: true })
+                    this.getData()
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
+            this._isMounted && this.setState({ loading: false })
+        }else{
+            this._isMounted && this.setState({ openNotificationError: true })
+        }
+    }
 
+    validateForm = (email,question) => {
+        let valid = true;
 
-        this.setState({ loading: false })
+        if(email === '' || question === ''){
+            valid = false
+        }
+
+        Object.values(this.state.errors).forEach(
+            // if we have an error string set valid to false
+            (val) => val.length > 0 && (valid = false)
+        );
+        return valid;
     }
 
 
 
     handleChangeCategorie = event => {
         console.log(event.target.value);
-        this.setState({ categorieSelected: event.target.value })
+        this._isMounted && this.setState({ categorieSelected: event.target.value })
     };
 
 
     handleSearch = () => {
-        this.setState({ loadingQuestion: true })
+        this._isMounted && this.setState({ loadingQuestion: true })
         console.log('search')
 
         this.getData()
 
         setTimeout(() => {
-            this.setState({ loadingQuestion: false })
+            this._isMounted && this.setState({ loadingQuestion: false })
         }, 500)
     }
 
-    handleAddQuestions = async() =>{
-        this.setState({ LoadingQuestionPlus: true })
+    handleAddQuestions = async () => {
+        this._isMounted && this.setState({ LoadingQuestionPlus: true })
         await this.getData()
-        this.setState({ LoadingQuestionPlus: false })
+        this._isMounted && this.setState({ LoadingQuestionPlus: false })
     }
 
 
@@ -145,14 +212,14 @@ class Question extends Component {
             )
         } else {
 
-            const { questions, username, email, question, search, isPrivate } = this.state
+            const { questions, username, email, question, search, isPrivate, errors } = this.state
             const { classes } = this.props
             return (
                 <MDBContainer style={{ paddingTop: 5 }}>
                     <MDBRow className="">
                         <MDBCol md="12">
                             <FormQuestionAuRav onChange={this.onChange} username={username} email={email} question={question} onSubmit={this.addQuestion}
-                                isPrivate={isPrivate} onChangeIsprivate={this.onChangeIsprivate} />
+                                isPrivate={isPrivate} onChangeIsprivate={this.onChangeIsprivate} errors={errors} />
                         </MDBCol>
                         <MDBCol md="12">
                             <MDBContainer>
@@ -162,7 +229,7 @@ class Question extends Component {
 
                                 <div className="mt-4">
 
-                                
+
 
                                     <div className="input-group input-group-md  pb-4">
                                         <div className="input-group-prepend">
@@ -177,7 +244,7 @@ class Question extends Component {
                                     </div>
 
                                     <div className="input-group input-group-md  mb-2">
-                                        <FormControl variant="filled" className={classes.formControl} style={{  marginBottom: 2 }}>
+                                        <FormControl variant="filled" className={classes.formControl} style={{ marginBottom: 2 }}>
                                             <InputLabel id="demo-simple-select-filled-label">Categorie</InputLabel>
                                             <Select
                                                 labelId="demo-simple-select-filled-label"
@@ -207,7 +274,7 @@ class Question extends Component {
                                         </div>
                                         :
                                         <>
-                                         {/* <MDBTable scrollY maxHeight="300px"> */}
+                                            {/* <MDBTable scrollY maxHeight="300px"> */}
                                             {
                                                 questions.length > 0
                                                 &&
@@ -215,16 +282,17 @@ class Question extends Component {
                                                     .map(key =>
                                                         <MDBMedia
                                                             key={key}
-                                                            className="d-block d-md-flex mt-4">
+                                                            style={{ backgroundColor: '#f5f5f5' }}
+                                                            className="d-block d-md-flex mt-4 img-thumbnail ">
                                                             <img className="card-img-64 d-flex mx-auto mb-3" src="https://mdbootstrap.com/img/Photos/Avatars/img (32).jpg"
                                                                 alt="" />
                                                             <MDBMedia body className="text-center text-md-left ml-md-3 ml-0">
-                                                                <MDBNavLink exact to={`/question-au-rav/${questions[key].id}`} >
-                                                                    <h5 className="font-weight-bold mt-0">
+                                                                <Link to={`/question-au-rav/${questions[key].id}`} >
+                                                                    <h5 className="font-weight-bold mt-0 text-dark">
                                                                         {questions[key].sujet}
                                                                         ( Reponse Rav :  {questions[key].nomDuRav} )
                                                                    </h5>
-                                                                </MDBNavLink>
+                                                                </Link>
                                                                 {questions[key].question}
                                                             </MDBMedia>
                                                         </MDBMedia>
@@ -244,7 +312,7 @@ class Question extends Component {
                                                         onClick={this.handleAddQuestions}
                                                     > Charger plus de questions</button>
                                             }
-                                        {/* </MDBTable> */}
+                                            {/* </MDBTable> */}
                                         </>
                                 }
                             </MDBContainer>
@@ -253,6 +321,7 @@ class Question extends Component {
 
 
                     <Notification handleClose={() => { this.setState({ openNotification: false }) }} open={this.state.openNotification} message={"Question envoyée"} variant={"success"} />
+                    <Notification handleClose={() => { this.setState({ openNotificationError: false }) }} open={this.state.openNotificationError} message={"Problem d'envoie de la quesion "} variant={"error"} />
 
 
                 </MDBContainer >
@@ -263,8 +332,11 @@ class Question extends Component {
 
 }
 
-
-
+function validateEmail(email) {
+    // eslint-disable-next-line 
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 
 export {

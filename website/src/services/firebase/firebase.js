@@ -2,6 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
+import 'firebase/functions'
+
 import Rebase from 're-base'
 
 
@@ -24,6 +26,7 @@ class Firebase {
       this.fieldValue = app.firestore.FieldValue;
       this.auth = app.auth();
       this.db = app.firestore();
+      this.functions = app.functions();
 
       this.base = Rebase.createClass(app.database())
 
@@ -62,6 +65,10 @@ class Firebase {
     this.auth.currentUser.updatePassword(password);
 
 
+  getACurrentUser = () => this.auth.currentUser
+
+
+  callFunctionFirebase = (path) => this.functions.httpsCallable(path)
 
   // *** User API ***
   user = uid => this.db.doc(`users/${uid}`);
@@ -71,12 +78,19 @@ class Firebase {
   message = uid => this.db.doc(`messages/${uid}`);
   messages = () => this.db.collection('messages');
 
-  // *** Message API ***
+  // *** questions commentaires API ***
   questions = () => this.db.collection('questions-au-rav');
   commentaires = () => this.db.collection('questions-commentaires');
 
+  
+  // *** contacts API ***
+  contact = () => this.db.collection('contacts');
+
+
   // *** Real time DataBase ***
   firebaseSyncState = (path, state) => this.base.syncState(path, state)
+
+
 
 
 }
